@@ -78,14 +78,14 @@ public final class Constants {
         public static final int kPCM_PORT = 1;
     }
     
-    public static final class IntakeContstants{
-        public static final int kINTAKE_DEPLOY = 1;
-        public static final int kINTAKE_RETRACT = 0;
+    public static final class IntakeConstants{
+        public static final int kINTAKE_FWD = 1;
+        public static final int kINTAKE_REV = 0;
 
     }
 
     public static final class HopperConstants{
-        public static final int kLIFT_BELT_FRAME = 2;
-        public static final int kDROP_BELT_FRAME = 3;
+        public static final int kBELT_FRAME_FWD= 3;
+        public static final int kBELT_FRAME_REV = 2;
     }
 }

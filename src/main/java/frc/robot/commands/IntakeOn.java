@@ -6,18 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.Vision;
 
 public class IntakeOn extends CommandBase {
 
   private IntakeSubsystem m_intake;
+  private HopperSubsystem m_hopper;
   private Vision m_vision;
   
   /** Creates a new IntakeOn. */
-  public IntakeOn(IntakeSubsystem intake, Vision vision) {
+  public IntakeOn(IntakeSubsystem intake, HopperSubsystem hopper, Vision vision) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake, vision);
+    addRequirements(intake, hopper, vision);
     m_intake = intake;
+    m_hopper = hopper;
     m_vision = vision;
   }
 
@@ -25,6 +28,7 @@ public class IntakeOn extends CommandBase {
   @Override
   public void initialize() {
     m_intake.deployIntake();
+    m_hopper.liftBeltFrame();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +40,7 @@ public class IntakeOn extends CommandBase {
   public void end(boolean interrupted) {
     //if (!interrupted) {
       m_intake.retractIntake();
+      m_hopper.dropBeltFrame();
      //}
   }
 

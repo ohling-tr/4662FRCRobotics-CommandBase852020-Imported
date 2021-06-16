@@ -4,12 +4,12 @@
 
 package frc.robot.subsystems;
 
-import org.graalvm.compiler.lir.alloc.lsra.IntervalWalker;
+//import org.graalvm.compiler.lir.alloc.lsra.IntervalWalker;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CommonConstants;
-import frc.robot.Constants.IntakeContstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private DoubleSolenoid intakeLift;
 
   public IntakeSubsystem() {
-    intakeLift = new DoubleSolenoid(CommonConstants.kPCM_PORT,IntakeContstants.kINTAKE_DEPLOY,IntakeContstants.kINTAKE_RETRACT);
+    intakeLift = new DoubleSolenoid(CommonConstants.kPCM_PORT,IntakeConstants.kINTAKE_FWD,IntakeConstants.kINTAKE_REV);
   }
 
   @Override
@@ -26,10 +26,10 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void deployIntake() {
-    intakeLift.set(DoubleSolenoid.Value.kForward);
+    intakeLift.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void retractIntake() {
-    intakeLift.set(DoubleSolenoid.Value.kReverse);
+    intakeLift.set(DoubleSolenoid.Value.kForward);
   }
 }
