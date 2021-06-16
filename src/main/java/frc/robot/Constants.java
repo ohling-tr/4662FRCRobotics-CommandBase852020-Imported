@@ -73,4 +73,19 @@ public final class Constants {
         public static final String kVISION_TAB_KEY = "Vision Table";
 
     }
+
+    public static final class CommonConstants{
+        public static final int kPCM_PORT = 1;
+    }
+    
+    public static final class IntakeConstants{
+        public static final int kINTAKE_FWD = 1;
+        public static final int kINTAKE_REV = 0;
+
+    }
+
+    public static final class HopperConstants{
+        public static final int kBELT_FRAME_FWD= 3;
+        public static final int kBELT_FRAME_REV = 2;
+    }
 }

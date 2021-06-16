@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_drive = new DriveSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final HopperSubsystem m_hopper = new HopperSubsystem();
   private final Vision m_vision = new Vision();
 
   private final Joystick m_driveStick = new Joystick(0);
@@ -70,6 +72,9 @@ public class RobotContainer {
         () -> m_console.getY()
       )
     );
+
+    new JoystickButton(m_driveStick, JoystickButtons.kINTAKE)
+      .whileHeld(new IntakeOn(m_intake, m_hopper, m_vision));
 
 //    new JoystickButton(m_driveStick, JoystickButtons.kCLIMB_EXTEND)
 
