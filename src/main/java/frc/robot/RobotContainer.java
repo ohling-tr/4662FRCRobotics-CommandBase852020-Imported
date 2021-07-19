@@ -10,9 +10,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickButtons;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.libraries.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -28,6 +30,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final HopperSubsystem m_hopper = new HopperSubsystem();
   private final Vision m_vision = new Vision();
+  private final ConsoleCommand m_consoleCommand = new ConsoleCommand();
 
   private final Joystick m_driveStick = new Joystick(0);
   private final Joystick m_console = new Joystick(1);
@@ -48,6 +51,14 @@ public class RobotContainer {
         () -> m_console.getX()
       )
     );
+
+    m_vision.setDefaultCommand(
+      new FwdCameraTilt(m_vision,
+        () -> m_console.getY()
+      )
+    );
+
+    // lamda for pov - "() -> m_Console.getPOV(0)"
   }
 
   /**
@@ -67,16 +78,8 @@ public class RobotContainer {
     new JoystickButton(m_driveStick, JoystickButtons.kREV_VISION_ON)
       .whileHeld(new RevVisionLightOn(m_vision));
 
-    new JoystickButton(m_driveStick, JoystickButtons.kFWD_CAM_VRBL)
-      .whileHeld(new FwdCameraTilt(m_vision,
-        () -> m_console.getY()
-      )
-    );
-
     new JoystickButton(m_driveStick, JoystickButtons.kINTAKE)
-      .whileHeld(new IntakeOn(m_intake, m_hopper, m_vision));
-
-//    new JoystickButton(m_driveStick, JoystickButtons.kCLIMB_EXTEND)
+      .whileHeld(new IntakeOn(m_intake, m_hopper));
 
   }
 
@@ -86,8 +89,21 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  public void getAutonomousName() {
+    // An ExampleCommand will run in autonomous
+    // lamda for pov - "() -> m_Console.getPOV(0)"
+    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    SmartDashboard.putString("Auto Name", commandName);
+  }
+
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    // lamda for pov - "() -> m_Console.getPOV(0)"
+    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    SmartDashboard.putString("Auto Name", commandName);
+    Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    Boolean bIsCommandFound = autoCommand != null;
+    SmartDashboard.putBoolean("Auto Found", bIsCommandFound);
+    return autoCommand;
   }
 }
