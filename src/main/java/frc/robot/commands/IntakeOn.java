@@ -13,15 +13,13 @@ public class IntakeOn extends CommandBase {
 
   private IntakeSubsystem m_intake;
   private HopperSubsystem m_hopper;
-  private Vision m_vision;
   
   /** Creates a new IntakeOn. */
-  public IntakeOn(IntakeSubsystem intake, HopperSubsystem hopper, Vision vision) {
+  public IntakeOn(IntakeSubsystem intake, HopperSubsystem hopper) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake, hopper, vision);
+    addRequirements(intake, hopper);
     m_intake = intake;
     m_hopper = hopper;
-    m_vision = vision;
   }
 
   // Called when the command is initially scheduled.
