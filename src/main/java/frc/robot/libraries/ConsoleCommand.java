@@ -76,16 +76,18 @@ public class ConsoleCommand {
   * if the settings are out of bounds use the default
   * and hope someone defined a default command
   */
-  public String getPatternName(IntSupplier position, IntSupplier pattern) {
+  //public String getPatternName(IntSupplier position, IntSupplier pattern) {
+    public String getPatternName(IntSupplier position) {
 
     int iPosition = position.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
-    int iPattern = pattern.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
+    //int iPattern = pattern.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
     String patternName = ConsoleCommandConstants.kDEFAULT_PATTERN_NAME;
 
     if (iPosition < ConsoleCommandConstants.kPOS_PATTERN_NAME.length) {
-      if (iPattern < ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition].length) {
-        patternName = ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition][iPattern];
-      }
+      //if (iPattern < ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition].length) {
+        //patternName = ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition][iPattern];
+      //}
+      patternName = ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition];
     }
     
     return patternName;
@@ -97,9 +99,11 @@ public class ConsoleCommand {
    *
    * @return the option selected
    */
-  public Command getSelected(IntSupplier position, IntSupplier pattern) {
+  //public Command getSelected(IntSupplier position, IntSupplier pattern) {
+  public Command getSelected(IntSupplier position) {
 
-    String sPatternName = getPatternName(position, pattern);
+    //String sPatternName = getPatternName(position, pattern);
+    String sPatternName = getPatternName(position);
     return m_map.get(sPatternName);
 
   }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickButtons;
+import frc.robot.Constants.ConsoleCommandConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.libraries.*;
@@ -35,6 +36,9 @@ public class RobotContainer {
   private final Joystick m_driveStick = new Joystick(0);
   private final Joystick m_console = new Joystick(1);
 
+  private final AutoMiddle m_autoMiddle;
+  private final AutoDefault m_aAutoDefault;
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -57,6 +61,11 @@ public class RobotContainer {
         () -> m_console.getY()
       )
     );
+
+    m_aAutoDefault = new AutoDefault();
+    m_consoleCommand.addOption(ConsoleCommandConstants.kPOS_PATTERN_NAME[ConsoleCommandConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
+    m_autoMiddle = new AutoMiddle();
+    m_consoleCommand.addOption(ConsoleCommandConstants.kPOS_PATTERN_NAME[ConsoleCommandConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
 
     // lamda for pov - "() -> m_Console.getPOV(0)"
   }
@@ -92,16 +101,19 @@ public class RobotContainer {
   public void getAutonomousName() {
     // An ExampleCommand will run in autonomous
     // lamda for pov - "() -> m_Console.getPOV(0)"
-    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    //String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0));
     SmartDashboard.putString("Auto Name", commandName);
   }
 
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // lamda for pov - "() -> m_Console.getPOV(0)"
-    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    //String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0));
     SmartDashboard.putString("Auto Name", commandName);
-    Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    //Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
+    Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0));
     Boolean bIsCommandFound = autoCommand != null;
     SmartDashboard.putBoolean("Auto Found", bIsCommandFound);
     return autoCommand;
