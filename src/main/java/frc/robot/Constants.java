@@ -89,7 +89,7 @@ public final class Constants {
         public static final int kBELT_FRAME_REV = 2;
     }
 
-    public static final class ConsoleCommandConstants{
+    public static final class ConsoleConstants{
         public static final int kPOV_INTERVAL = 45;
     
         public static final int kPOSITION_LEFT_I = 0;

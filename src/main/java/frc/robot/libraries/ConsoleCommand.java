@@ -3,10 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.libraries;
-
-import frc.robot.Constants.ConsoleCommandConstants;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ConsoleConstants;
 
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -15,12 +14,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 //import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.IntSupplier;
 
 /**
@@ -52,9 +48,6 @@ public class ConsoleCommand {
 
   private String m_defaultChoice = "";
   
- // private final int m_instance;
-  private static final AtomicInteger s_instances = new AtomicInteger();
-  
   /** Creates a new ConsoleCommand. */
   public ConsoleCommand() {
 
@@ -77,20 +70,21 @@ public class ConsoleCommand {
   * and hope someone defined a default command
   */
   //public String getPatternName(IntSupplier position, IntSupplier pattern) {
-    public String getPatternName(IntSupplier position) {
+  public String getPatternName(IntSupplier position) {
 
-    int iPosition = position.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
+    int iPosition = position.getAsInt() / ConsoleConstants.kPOV_INTERVAL;
     //int iPattern = pattern.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
-    String patternName = ConsoleCommandConstants.kDEFAULT_PATTERN_NAME;
+    String patternName = ConsoleConstants.kDEFAULT_PATTERN_NAME;
 
-    if (iPosition < ConsoleCommandConstants.kPOS_PATTERN_NAME.length) {
+    if (iPosition < ConsoleConstants.kPOS_PATTERN_NAME.length) {
       //if (iPattern < ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition].length) {
         //patternName = ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition][iPattern];
       //}
-      patternName = ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition];
+      patternName = ConsoleConstants.kPOS_PATTERN_NAME[iPosition];
     }
-    
+    SmartDashboard.putString("Auto Name", patternName);
     return patternName;
+
   }
 
   /**
@@ -102,10 +96,25 @@ public class ConsoleCommand {
   //public Command getSelected(IntSupplier position, IntSupplier pattern) {
   public Command getSelected(IntSupplier position) {
 
+    Command autoCommand = null;
     //String sPatternName = getPatternName(position, pattern);
     String sPatternName = getPatternName(position);
-    return m_map.get(sPatternName);
-
+    autoCommand = m_map.get(sPatternName);
+    Boolean bIsCommandFound = autoCommand != null;
+    SmartDashboard.putBoolean("Auto Found", bIsCommandFound);
+    if (!bIsCommandFound) {
+      autoCommand = getAutoDefault();
+    }
+    return autoCommand;
+  
   }
 
+  public Command getAutoDefault() {
+
+    Command autoDefault = null;
+    //String sPatternName = getPatternName(position, pattern);
+    autoDefault = m_map.get(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I]);
+    return autoDefault;
+
+  }
 }

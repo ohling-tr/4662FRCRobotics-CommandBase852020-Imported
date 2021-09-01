@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickButtons;
-import frc.robot.Constants.ConsoleCommandConstants;
+import frc.robot.Constants.ConsoleConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.libraries.*;
@@ -63,9 +63,9 @@ public class RobotContainer {
     );
 
     m_aAutoDefault = new AutoDefault();
-    m_consoleCommand.addOption(ConsoleCommandConstants.kPOS_PATTERN_NAME[ConsoleCommandConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
+    m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
     m_autoMiddle = new AutoMiddle();
-    m_consoleCommand.addOption(ConsoleCommandConstants.kPOS_PATTERN_NAME[ConsoleCommandConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
+    m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
 
     // lamda for pov - "() -> m_Console.getPOV(0)"
   }
@@ -98,24 +98,14 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void getAutonomousName() {
-    // An ExampleCommand will run in autonomous
-    // lamda for pov - "() -> m_Console.getPOV(0)"
-    //String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
-    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0));
-    SmartDashboard.putString("Auto Name", commandName);
-  }
-
+  
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // lamda for pov - "() -> m_Console.getPOV(0)"
-    //String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
-    String commandName = m_consoleCommand.getPatternName(() -> m_console.getPOV(0));
-    SmartDashboard.putString("Auto Name", commandName);
+
     //Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
     Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0));
-    Boolean bIsCommandFound = autoCommand != null;
-    SmartDashboard.putBoolean("Auto Found", bIsCommandFound);
     return autoCommand;
+  
   }
 }
