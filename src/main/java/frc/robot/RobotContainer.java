@@ -10,7 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController.Button;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickButtons;
 import frc.robot.Constants.ConsoleConstants;
 import frc.robot.commands.*;
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final ConsoleCommand m_consoleCommand = new ConsoleCommand();
 
   private final Joystick m_driveStick = new Joystick(0);
+  private final JoystickButton m_turnDash = new JoystickButton(m_driveStick, JoystickButtons.kTURN_DASH);
   private final Joystick m_console = new Joystick(1);
 
   private final AutoMiddle m_autoMiddle;
@@ -63,7 +65,7 @@ public class RobotContainer {
     );
 
     m_aAutoDefault = new AutoDefault();
-    m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
+    m_consoleCommand.setDefaultOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
     m_autoMiddle = new AutoMiddle();
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
 
@@ -89,6 +91,8 @@ public class RobotContainer {
 
     new JoystickButton(m_driveStick, JoystickButtons.kINTAKE)
       .whileHeld(new IntakeOn(m_intake, m_hopper));
+
+    m_turnDash.whenPressed(new AutoTurn(m_drive));
 
   }
 

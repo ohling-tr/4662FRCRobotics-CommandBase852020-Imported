@@ -27,6 +27,8 @@ public final class Constants {
         public static final int kINTAKE = 4;
         public static final int kCLIMB_EXTEND = 10;
         public static final int kFWD_CAM_VRBL = 11;
+
+        public static final int kTURN_DASH = 9;
     }
 
     public static final class DriveConstants {
@@ -50,6 +52,12 @@ public final class Constants {
 
         public static final DifferentialDriveKinematics K_DRIVE_KINEMATICS = new DifferentialDriveKinematics(kTRACK_WIDTH_M);
 
+        public static final double kTURN_ANGLE_P = 0.2;
+        public static final double kTURN_ANGLE_I = 0.0;
+        public static final double kTURN_ANGLE_D = 0.4;
+        public static final double kTURN_ANGLE_TOLERANCE = 2;
+        public static final double kTURN_ANGLE_TOLERANCE_DEG_PER_S = 10;
+        
     }
 
     public static final class VisionConstants {
@@ -102,10 +110,7 @@ public final class Constants {
         public static final int kPATTERN_SHOOT_I = 1;
         public static final int kPATTERH_GATHER_I = 2;
         */
-       //public static final String kDEFAULT_PATTERN_NAME = "Default.Default";
-        public static final String kDEFAULT_PATTERN_NAME = "Default";    
-    
-
+       
         /*public static final String kPOS_PATTERN_NAME[][] = {{"Left.Crossline", "Left.ShootCross", "Left.ShootGatther"},
                                                             {"Mid.Crossline", "Mid.ShootCross", "Mid.ShootGather"},
                                                             {"Right.Crossline", "Right.ShootCross", "Right.ShootGather"},

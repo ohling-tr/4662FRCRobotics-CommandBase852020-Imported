@@ -16,8 +16,10 @@ import frc.robot.Constants.ConsoleConstants;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+//import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntSupplier;
+import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
+
 
 /**
  * The {@link SendableChooser} class is a useful tool for presenting a selection of options to the
@@ -33,17 +35,19 @@ import java.util.function.IntSupplier;
  */
 public class ConsoleCommand {
 
+  
   /** The key for the default value. */
-  private static final String DEFAULT = "default";
+  //private static final String DEFAULT = "default";
   /** The key for the selected option. */
-  private static final String SELECTED = "selected";
+  //private static final String SELECTED = "selected";
   /** The key for the active option. */
-  private static final String ACTIVE = "active";
+  //private static final String ACTIVE = "active";
   /** The key for the option array. */
-  private static final String OPTIONS = "options";
+  //private static final String OPTIONS = "options";
   /** The key for the instance number. */
-  private static final String INSTANCE = ".instance";
+  //private static final String INSTANCE = ".instance";
   /** A map linking strings to the objects the represent. */
+  
   private final Map<String, Command> m_map = new LinkedHashMap<>();
 
   private String m_defaultChoice = "";
@@ -64,6 +68,12 @@ public class ConsoleCommand {
     m_map.put(name, command);
   }
 
+  public void setDefaultOption(String name, Command object) {
+    requireNonNullParam(name, "name", "setDefaultOption");
+
+    m_defaultChoice = name;
+    addOption(name, object);
+  }
   /*
   * given the position and pattern settings find a matching name
   * if the settings are out of bounds use the default
@@ -74,7 +84,7 @@ public class ConsoleCommand {
 
     int iPosition = position.getAsInt() / ConsoleConstants.kPOV_INTERVAL;
     //int iPattern = pattern.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
-    String patternName = ConsoleConstants.kDEFAULT_PATTERN_NAME;
+    String patternName = m_defaultChoice;
 
     if (iPosition < ConsoleConstants.kPOS_PATTERN_NAME.length) {
       //if (iPattern < ConsoleCommandConstants.kPOS_PATTERN_NAME[iPosition].length) {
@@ -103,18 +113,10 @@ public class ConsoleCommand {
     Boolean bIsCommandFound = autoCommand != null;
     SmartDashboard.putBoolean("Auto Found", bIsCommandFound);
     if (!bIsCommandFound) {
-      autoCommand = getAutoDefault();
+      autoCommand = m_map.get(m_defaultChoice);
     }
     return autoCommand;
   
   }
 
-  public Command getAutoDefault() {
-
-    Command autoDefault = null;
-    //String sPatternName = getPatternName(position, pattern);
-    autoDefault = m_map.get(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I]);
-    return autoDefault;
-
-  }
 }
