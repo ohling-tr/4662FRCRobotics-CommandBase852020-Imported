@@ -38,13 +38,11 @@ public class AutoTurn extends PIDCommand {
   public void initialize() {
     // TODO Auto-generated method stub
     super.initialize();
-    //m_drive.setDashboardAngle();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return m_drive.m_turnPIDController.atSetpoint();
-    //return false;
   }
 }
