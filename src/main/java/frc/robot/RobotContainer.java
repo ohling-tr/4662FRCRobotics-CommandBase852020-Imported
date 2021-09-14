@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_drive = new DriveSubsystem();
+  public static final DriveSubsystem m_drive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final HopperSubsystem m_hopper = new HopperSubsystem();
   private final Vision m_vision = new Vision();
@@ -38,6 +38,7 @@ public class RobotContainer {
   private final JoystickButton m_turnDash = new JoystickButton(m_driveStick, JoystickButtons.kTURN_DASH);
   private final Joystick m_console = new Joystick(1);
 
+  private final AutoLeft m_autoLeft;
   private final AutoMiddle m_autoMiddle;
   private final AutoDefault m_aAutoDefault;
 
@@ -66,6 +67,8 @@ public class RobotContainer {
 
     m_aAutoDefault = new AutoDefault();
     m_consoleCommand.setDefaultOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
+    m_autoLeft = new AutoLeft(m_drive);
+    m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_LEFT_I], m_autoLeft);
     m_autoMiddle = new AutoMiddle();
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
 
@@ -92,7 +95,7 @@ public class RobotContainer {
     new JoystickButton(m_driveStick, JoystickButtons.kINTAKE)
       .whileHeld(new IntakeOn(m_intake, m_hopper));
 
-    m_turnDash.whenPressed(new AutoTurn(m_drive));
+    m_turnDash.whenPressed(new AutoTurn(m_drive.m_turnPIDController, () -> m_drive.getYaw(), () -> m_drive.getDashboardAngle(), m_drive));
 
   }
 

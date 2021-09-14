@@ -52,6 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public PIDController m_turnPIDController;
   private double m_dAngle;
+  private double m_dAdjAngle;
 
   public DriveSubsystem() {
 
@@ -133,7 +134,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_turnPIDController = new PIDController(DriveConstants.kTURN_ANGLE_P, DriveConstants.kTURN_ANGLE_I, DriveConstants.kTURN_ANGLE_D);
     m_turnPIDController.setTolerance(DriveConstants.kTURN_ANGLE_TOLERANCE, DriveConstants.kTURN_ANGLE_TOLERANCE_DEG_PER_S);
     m_dAngle = 5; 
-    SmartDashboard.putNumber("Turn Angle", m_dAngle);   
+    m_dAdjAngle = m_dAdjAngle;
+    SmartDashboard.putNumber("Turn Angle", m_dAngle);  
+    SmartDashboard.putNumber("Adjusted Angle", m_dAdjAngle);
 
   }
 
@@ -147,6 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Odo Y" , m_driveOdometry.getPoseMeters().getTranslation().getY());
     SmartDashboard.putNumber("Odo X", m_driveOdometry.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("Odo Deg", m_driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("GyroYaw", getYaw());
   }
 
   public void arcadeDrive(final double velocity, final double heading) {
@@ -159,11 +163,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getDashboardAngle() {
     m_dAngle = SmartDashboard.getNumber("Turn Angle", m_dAngle);
+    //m_dAdjAngle = m_dAngle + getAngleK();
+    //SmartDashboard.putNumber("Adjusted Angle", m_dAdjAngle);
     return m_dAngle;
   }
 
   public double getAngleK() {
     return m_gyroK.getAngle();
+  }
+
+  public void resetYaw() {
+    m_gyroK.zeroYaw();
+  }
+
+  public double getYaw() {
+    return m_gyroK.getYaw();
   }
 
   private Rotation2d getRotation2dK() {
