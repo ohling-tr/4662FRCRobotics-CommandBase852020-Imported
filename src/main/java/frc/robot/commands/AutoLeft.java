@@ -10,14 +10,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 //import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+//import frc.robot.commands.*;
 
 public class AutoLeft extends CommandBase {
   /** Creates a new AutoLeft. */
 
   DriveSubsystem m_drive;
 
-  private static AutoTurn m_autoTurn1;
-  AutoTurn m_autoTurn2;
+  private static AutoTurn2 m_autoTurn1;
+  private static AutoTurn2 m_autoTurn2;
 
   Command m_currentCommand;
   
@@ -25,7 +26,9 @@ public class AutoLeft extends CommandBase {
     System.out.println("AutoLeft constructor");
     m_drive = drive;
     // Use addRequirements() here to declare subsystem dependencies
-    m_autoTurn1 = new AutoTurn(m_drive.m_turnPIDController, () -> m_drive.getYaw(), DriveConstants.kTURN_LEFT_AUTO1, m_drive);
+    addRequirements(m_drive);
+
+    m_autoTurn1 = new AutoTurn2(DriveConstants.kTURN_LEFT_AUTO1, m_drive);
     
   }
 

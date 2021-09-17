@@ -40,7 +40,7 @@ public class RobotContainer {
 
   // maybe make static rather than final (example from presentation)
   private static AutoLeft m_autoLeft;
-  //private static AutoTurn m_autoLeft;
+  //private static AutoTurn2 m_autoLeft;
   private static AutoMiddle m_autoMiddle;
   private static AutoDefault m_aAutoDefault;
 
@@ -70,7 +70,7 @@ public class RobotContainer {
     m_aAutoDefault = new AutoDefault();
     m_consoleCommand.setDefaultOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
     m_autoLeft = new AutoLeft(m_drive);
-    //m_autoLeft = new AutoTurn(m_drive.m_turnPIDController, () -> m_drive.getYaw(), 10, m_drive);
+    //m_autoLeft = new AutoTurn2(10.0, m_drive);
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_LEFT_I], m_autoLeft);
     m_autoMiddle = new AutoMiddle();
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
@@ -98,7 +98,7 @@ public class RobotContainer {
     new JoystickButton(m_driveStick, JoystickButtons.kINTAKE)
       .whileHeld(new IntakeOn(m_intake, m_hopper));
 
-    m_turnDash.whenPressed(new AutoTurn(m_drive.m_turnPIDController, () -> m_drive.getYaw(), () -> m_drive.getDashboardAngle(), m_drive));
+    m_turnDash.whenPressed(new AutoTurn2(() -> m_drive.getDashboardAngle(), m_drive));
 
   }
 

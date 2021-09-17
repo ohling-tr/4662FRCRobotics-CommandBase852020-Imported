@@ -8,8 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.DriveConstants;
+
+import java.util.function.DoubleSupplier;
 
 //import java.net.CacheRequest;
 
@@ -133,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_turnPIDController = new PIDController(DriveConstants.kTURN_ANGLE_P, DriveConstants.kTURN_ANGLE_I, DriveConstants.kTURN_ANGLE_D);
     m_turnPIDController.setTolerance(DriveConstants.kTURN_ANGLE_TOLERANCE, DriveConstants.kTURN_ANGLE_TOLERANCE_DEG_PER_S);
-    m_turnPIDController.disableContinuousInput();
+    //m_turnPIDController.disableContinuousInput();
     m_dAngle = 0;
 
     //m_dAdjAngle = m_dAngle;
@@ -156,37 +158,42 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(final double velocity, final double heading) {
+    //System.out.println("heading " + heading);
     m_diffDrive.arcadeDrive(velocity, m_headingSign * heading);
   }
 
-  public void resetTurnController() {
+  public void initTurnController(DoubleSupplier targetAngle) {
     m_dStartAngle = getAngleK();
+    m_turnPIDController.setSetpoint(targetAngle.getAsDouble() + m_dStartAngle);
     m_turnPIDController.reset();
   }
-
-  public void setDashboardAngle() {
-    double angle = getDashboardAngle();
-    resetTurnController();
-    m_turnPIDController.setSetpoint(angle + m_dStartAngle);
+  
+  public void execTurnController() {
+    //System.out.println("Drive exec turn controller");
+    //System.out.println(MathUtil.clamp(m_turnPIDController.calculate(getAngleK()), -1, 1));
+    arcadeDrive(0, MathUtil.clamp(m_turnPIDController.calculate(getAngleK()),-1,1));
   }
 
-  public double getDashboardAngle() {
-    m_dAngle = SmartDashboard.getNumber("Turn Angle", m_dAngle);
-    return m_dAngle;
+  public void endTurnController() {
+   arcadeDrive(0, 0);
   }
 
   public boolean isTurnAtSetpoint() {
     return m_turnPIDController.atSetpoint();
   }
 
-  public void execTurnDrive() {
-    arcadeDrive(0, m_turnPIDController.calculate(getAngleK()));
+
+  //public void setDashboardAngle() {
+  //  double angle = getDashboardAngle();
+  //}
+
+  public double getDashboardAngle() {
+    m_dAngle = SmartDashboard.getNumber("Turn Angle", m_dAngle);
+    return m_dAngle;
   }
 
-  public void stopTurnDrive() {
-   arcadeDrive(0, 0);
- }
-
+  
+  
   public double getAngleK() {
     return m_gyroK.getAngle();
   }
