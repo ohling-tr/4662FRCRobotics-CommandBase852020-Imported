@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public PIDController m_turnPIDController;
   private double m_dAngle;
-  private double m_dAdjAngle;
+  private double m_dStartAngle;
 
   public DriveSubsystem() {
 
@@ -133,10 +133,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_turnPIDController = new PIDController(DriveConstants.kTURN_ANGLE_P, DriveConstants.kTURN_ANGLE_I, DriveConstants.kTURN_ANGLE_D);
     m_turnPIDController.setTolerance(DriveConstants.kTURN_ANGLE_TOLERANCE, DriveConstants.kTURN_ANGLE_TOLERANCE_DEG_PER_S);
-    m_dAngle = 5; 
-    m_dAdjAngle = m_dAdjAngle;
+    m_turnPIDController.disableContinuousInput();
+    m_dAngle = 0;
+
+    //m_dAdjAngle = m_dAngle;
     SmartDashboard.putNumber("Turn Angle", m_dAngle);  
-    SmartDashboard.putNumber("Adjusted Angle", m_dAdjAngle);
+    //SmartDashboard.putNumber("Adjusted Angle", m_dAdjAngle);
 
   }
 
@@ -157,16 +159,33 @@ public class DriveSubsystem extends SubsystemBase {
     m_diffDrive.arcadeDrive(velocity, m_headingSign * heading);
   }
 
+  public void resetTurnController() {
+    m_dStartAngle = getAngleK();
+    m_turnPIDController.reset();
+  }
+
   public void setDashboardAngle() {
-    m_turnPIDController.setSetpoint(10);
+    double angle = getDashboardAngle();
+    resetTurnController();
+    m_turnPIDController.setSetpoint(angle + m_dStartAngle);
   }
 
   public double getDashboardAngle() {
     m_dAngle = SmartDashboard.getNumber("Turn Angle", m_dAngle);
-    //m_dAdjAngle = m_dAngle + getAngleK();
-    //SmartDashboard.putNumber("Adjusted Angle", m_dAdjAngle);
     return m_dAngle;
   }
+
+  public boolean isTurnAtSetpoint() {
+    return m_turnPIDController.atSetpoint();
+  }
+
+  public void execTurnDrive() {
+    arcadeDrive(0, m_turnPIDController.calculate(getAngleK()));
+  }
+
+  public void stopTurnDrive() {
+   arcadeDrive(0, 0);
+ }
 
   public double getAngleK() {
     return m_gyroK.getAngle();

@@ -52,7 +52,7 @@ public final class Constants {
 
         public static final DifferentialDriveKinematics K_DRIVE_KINEMATICS = new DifferentialDriveKinematics(kTRACK_WIDTH_M);
 
-        public static final double kTURN_ANGLE_P = 0.7;
+        public static final double kTURN_ANGLE_P = 0.6;
         public static final double kTURN_ANGLE_I = 0.0;
         public static final double kTURN_ANGLE_D = 0.4;
         public static final double kTURN_ANGLE_TOLERANCE = 1;

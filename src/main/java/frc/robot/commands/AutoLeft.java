@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+//import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -16,7 +16,7 @@ public class AutoLeft extends CommandBase {
 
   DriveSubsystem m_drive;
 
-  AutoTurn m_autoTurn1;
+  private static AutoTurn m_autoTurn1;
   AutoTurn m_autoTurn2;
 
   Command m_currentCommand;

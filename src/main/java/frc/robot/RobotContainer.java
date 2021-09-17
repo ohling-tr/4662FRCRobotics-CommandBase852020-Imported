@@ -38,9 +38,11 @@ public class RobotContainer {
   private final JoystickButton m_turnDash = new JoystickButton(m_driveStick, JoystickButtons.kTURN_DASH);
   private final Joystick m_console = new Joystick(1);
 
-  private final AutoLeft m_autoLeft;
-  private final AutoMiddle m_autoMiddle;
-  private final AutoDefault m_aAutoDefault;
+  // maybe make static rather than final (example from presentation)
+  private static AutoLeft m_autoLeft;
+  //private static AutoTurn m_autoLeft;
+  private static AutoMiddle m_autoMiddle;
+  private static AutoDefault m_aAutoDefault;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -68,6 +70,7 @@ public class RobotContainer {
     m_aAutoDefault = new AutoDefault();
     m_consoleCommand.setDefaultOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
     m_autoLeft = new AutoLeft(m_drive);
+    //m_autoLeft = new AutoTurn(m_drive.m_turnPIDController, () -> m_drive.getYaw(), 10, m_drive);
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_LEFT_I], m_autoLeft);
     m_autoMiddle = new AutoMiddle();
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);

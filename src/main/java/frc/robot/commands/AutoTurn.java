@@ -51,14 +51,14 @@ public class AutoTurn extends PIDCommand {
   public void initialize() {
     // TODO Auto-generated method stub
     super.initialize();
-    m_drive.resetYaw();
+    //m_drive.resetYaw();
   }
 
-  @Override
-  public void execute() {
+  //@Override
+  //public void execute() {
     // TODO Auto-generated method stub
-    super.execute();
-  }
+  //  super.execute();
+  //}
 
   // Returns true when the command should end.
   @Override
