@@ -82,7 +82,7 @@ public class ConsoleCommand {
   //public String getPatternName(IntSupplier position, IntSupplier pattern) {
   public String getPatternName(IntSupplier position) {
 
-    int iPosition = position.getAsInt() / ConsoleConstants.kPOV_INTERVAL;
+    int iPosition = position.getAsInt();
     //int iPattern = pattern.getAsInt() / ConsoleCommandConstants.kPOV_INTERVAL;
     String patternName = m_defaultChoice;
 

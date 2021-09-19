@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+//import edu.wpi.first.wpilibj.XboxController.Button;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickButtons;
 import frc.robot.Constants.ConsoleConstants;
@@ -36,7 +36,7 @@ public class RobotContainer {
 
   private final Joystick m_driveStick = new Joystick(0);
   private final JoystickButton m_turnDash = new JoystickButton(m_driveStick, JoystickButtons.kTURN_DASH);
-  private final Joystick m_console = new Joystick(1);
+  private final ConsoleJoystick m_console = new ConsoleJoystick(1);
 
   // maybe make static rather than final (example from presentation)
   private static AutoLeft m_autoLeft;
@@ -57,20 +57,19 @@ public class RobotContainer {
         () -> m_driveStick.getY(),
         () -> m_driveStick.getTwist(),
         () -> m_driveStick.getThrottle(),
-        () -> m_console.getX()
+        () -> m_console.getXAxis()
       )
     );
 
     m_vision.setDefaultCommand(
       new FwdCameraTilt(m_vision,
-        () -> m_console.getY()
+        () -> m_console.getYAxis()
       )
     );
 
     m_aAutoDefault = new AutoDefault();
     m_consoleCommand.setDefaultOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_DEFAULT_I], m_aAutoDefault);
-    m_autoLeft = new AutoLeft(m_drive);
-    //m_autoLeft = new AutoTurn2(10.0, m_drive);
+    m_autoLeft = new AutoLeft(m_console, m_drive, m_hopper, m_intake, m_vision);
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_LEFT_I], m_autoLeft);
     m_autoMiddle = new AutoMiddle();
     m_consoleCommand.addOption(ConsoleConstants.kPOS_PATTERN_NAME[ConsoleConstants.kPOSITION_MIDDLE_I], m_autoMiddle);
@@ -114,7 +113,7 @@ public class RobotContainer {
     // lamda for pov - "() -> m_Console.getPOV(0)"
 
     //Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0), () -> m_console.getPOV(1));
-    Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getPOV(0));
+    Command autoCommand = m_consoleCommand.getSelected(() -> m_console.getROT_SW_0());
     return autoCommand;
   
   }
