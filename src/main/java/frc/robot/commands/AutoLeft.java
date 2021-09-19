@@ -8,11 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 //import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.DriveSubsystem;
-//import frc.robot.commands.*;
+import frc.robot.commands.*;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Vision;
@@ -35,8 +36,8 @@ public class AutoLeft extends CommandBase {
   private static Wait m_wait2;
   private int m_waitCount;
 
-  private static ParallelCommandGroup m_camera1;
-  private static ParallelCommandGroup m_waitIntake1;
+  private static ParallelRaceGroup m_camera1;
+  private static ParallelRaceGroup m_waitIntake1;
 
   Command m_currentCommand;
   
@@ -57,11 +58,11 @@ public class AutoLeft extends CommandBase {
 
     m_revVision1 = new RevVisionLightOn(m_vision);
 
-    m_camera1 = new ParallelCommandGroup(m_revVision1, m_wait1);
+    m_camera1 = new ParallelRaceGroup(m_revVision1, m_wait1);
 
     m_intake1 = new IntakeOn(m_intake, m_hopper);
 
-    m_waitIntake1 = new ParallelCommandGroup(m_intake1, m_wait2);
+    m_waitIntake1 = new ParallelRaceGroup(m_intake1, m_wait2);
     
   }
 
@@ -72,7 +73,7 @@ public class AutoLeft extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("AutoLeft init");
+    //System.out.println("AutoLeft init");
     m_currentCommand = m_autoTurn1;
     dashboardCmd("1-autoturn1");
     m_currentCommand.initialize();
@@ -81,14 +82,14 @@ public class AutoLeft extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("AutoLeft execute");
+    //System.out.println("AutoLeft execute");
     m_currentCommand.execute();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("AutoLeft end");
+    //System.out.println("AutoLeft end");
     m_currentCommand.end(interrupted);
     dashboardCmd("n-Auto Done");
   }
@@ -103,7 +104,7 @@ public class AutoLeft extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    System.out.println("AutoLeft isFinished");
+    //System.out.println("AutoLeft isFinished");
     //boolean returnIsFinished = false;
     //returnIsFinished = m_currentCommand.isFinished();
 
@@ -117,7 +118,7 @@ public class AutoLeft extends CommandBase {
         switchCommand(m_wait1);
         m_waitCount = 1;
       } else {
-        dashboardCmd("2-camera1");
+        dashboardCmd("4-camera1");
         switchCommand(m_camera1);
       }
       return false;
@@ -125,24 +126,25 @@ public class AutoLeft extends CommandBase {
 
     if (m_currentCommand == m_wait1) {
       if (m_waitCount >= m_console.getROT_SW_1()) {
-        dashboardCmd("2-camera1");
+        dashboardCmd("4-camera1");
         switchCommand(m_camera1);
       } else {
-        dashboardCmd("2-wait1");
+        dashboardCmd("3-wait1");
         switchCommand(m_wait1);
-        m_waitCount++;
       }
-
+      m_waitCount++;
+      return false;
     }
 
     if (m_currentCommand == m_camera1) {
-      dashboardCmd("3-intake1");
-      switchCommand(m_intake1);
+      dashboardCmd("5-intake1");
+      switchCommand(m_waitIntake1);
       return false;
     }
 
     // last command returns true if isFinished
-    if (m_currentCommand == m_intake1) {
+    if (m_currentCommand == m_waitIntake1) {
+      m_currentCommand.end(false);
       return true;
     }
 

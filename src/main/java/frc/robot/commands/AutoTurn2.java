@@ -34,7 +34,7 @@ public class AutoTurn2 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("AutoTurn2 execute");
+    //System.out.println("AutoTurn2 execute");
     m_drive.execTurnController();
   }
 

@@ -21,11 +21,12 @@ public class ConsoleJoystick extends Joystick {
     private static final int kPOV_SW_1 = 1;
 
     public int getROT_SW_0() {
-        return getPOV(kPOV_SW_0) / 45;
+        return this.getPOV(kPOV_SW_0) / 45;
     }
 
     public int getROT_SW_1() {
-        return getPOV(kPOV_SW_1) / 45;
+        //System.out.println("Get ROT SW 1 " + this.getPOV(kPOV_SW_1)/45);
+        return this.getPOV(kPOV_SW_1) / 45;
     }
 
     public double getXAxis() {
