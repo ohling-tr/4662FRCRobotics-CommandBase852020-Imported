@@ -88,20 +88,20 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightController1.setSmartCurrentLimit(DriveConstants.kCURRENT_LIMIT);
     m_rightController2.setSmartCurrentLimit(DriveConstants.kCURRENT_LIMIT);
 
+    /*
     m_leftControlGroup = new SpeedControllerGroup(m_leftController1, m_leftController2);
     m_rightControlGroup = new SpeedControllerGroup(m_rightController1, m_rightController2);
     m_leftControlGroup.setInverted(DriveConstants.kIS_DRIVE_INVERTED);
     m_rightControlGroup.setInverted(DriveConstants.kIS_DRIVE_INVERTED);
     m_diffDrive = new DifferentialDrive(m_leftControlGroup, m_rightControlGroup);
+    */
     
-    /*
     m_leftController1.setInverted(DriveConstants.kIS_DRIVE_INVERTED);
     m_rightController1.setInverted(!DriveConstants.kIS_DRIVE_INVERTED);
     m_diffDrive = new DifferentialDrive(m_leftController1, m_rightController1);
     m_leftController2.follow(m_leftController1);
     m_rightController2.follow(m_rightController1);
-    */
-    
+        
     if (DriveConstants.kIS_DRIVE_INVERTED) {
       m_leftEncoderSign = 1;
       m_rightEncoderSign = -1;
